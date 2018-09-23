@@ -1,0 +1,15 @@
+{% assign tax_multiplier = 1 %}
+
+
+{% if product.selected_or_first_available_variant != null and settings.tax_enable %}
+{% assign tax_percentage = settings.tax_amount | round: 2 | divided_by: 100 | plus: 1 %}
+  {% if product.selected_or_first_available_variant.taxable %}
+    {% assign tax_multiplier = tax_percentage %}
+  {% endif %}
+{% elsif product.variants[0].taxable and settings.tax_enable %}
+  {% assign tax_multiplier = tax_percentage %}
+{% endif %}
+
+{% if product.type == 'Gift Card' %}
+  {% assign tax_multiplier = 1 %}
+{% endif %}
