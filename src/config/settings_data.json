@@ -25,7 +25,7 @@
     "social_facebook_link": "",
     "social_twitter_link": "",
     "social_pinterest_link": "",
-    "social_instagram_link": "https:\/\/instagram.com\/millefryd_knitwear\/",
+    "social_instagram_link": "https://instagram.com/millefryd_knitwear/",
     "social_snapchat_link": "",
     "social_tumblr_link": "",
     "social_youtube_link": "",
@@ -115,11 +115,11 @@
         "settings": {
           "size": "medium",
           "background_color": "#faf9f6",
-          "image": "shopify:\/\/shop_images\/sorbet_caradigan.jpg",
+          "image": "shopify://shop_images/sorbet_caradigan.jpg",
           "image_crop": "circle",
           "alignment": "center left",
           "title": "Om Mille Fryd Knitwear",
-          "text": "<p>En dejlig lang barsel i 2015, hvor jeg l&aelig;rte at strikke blev til Mille Fryd Knitwear - et univers af strikke designs til baby, b&oslash;rn og voksne.<\/p>\n<p>Brandet Mille Fryd Knitwear er design, kreativitet, skaberlyst og bag&nbsp;er 34-&aring;rige Mille, der er den kreative iv&aelig;rks&aelig;tter, mor til 3 piger og sundhedsplejerskestuderende.&nbsp;<\/p>\n<p><\/p>\n<p>F&oslash;lg gerne med:&nbsp;instagram @millefryd_knitwear.dk facebook Mille Fryd Knitwear<\/p>\n<p><\/p>",
+          "text": "<p>En dejlig lang barsel i 2015, hvor jeg l&aelig;rte at strikke blev til Mille Fryd Knitwear - et univers af strikke designs til baby, b&oslash;rn og voksne.</p>\n<p>Brandet Mille Fryd Knitwear er design, kreativitet, skaberlyst og bag&nbsp;er 34-&aring;rige Mille, der er den kreative iv&aelig;rks&aelig;tter, mor til 3 piger og sundhedsplejerskestuderende.&nbsp;</p>\n<p></p>\n<p>F&oslash;lg gerne med:&nbsp;instagram @millefryd_knitwear.dk facebook Mille Fryd Knitwear</p>\n<p></p>",
           "use_second_button": false,
           "button_label": "",
           "button_link": "",
@@ -151,51 +151,51 @@
           "1486649208703": {
             "type": "image",
             "settings": {
-              "image": "shopify:\/\/shop_images\/dukke_birk_in_the_making.jpg",
+              "image": "shopify://shop_images/dukke_birk_in_the_making.jpg",
               "alignment": "top left",
               "title": "",
               "button": "Dukkestrik",
-              "cta_link": "shopify:\/\/products\/dukkestrik-digitalt"
+              "cta_link": "shopify://products/dukkestrik-digitalt"
             }
           },
           "1486649267624": {
             "type": "image",
             "settings": {
-              "image": "shopify:\/\/shop_images\/kalle27.jpg",
+              "image": "shopify://shop_images/kalle27.jpg",
               "alignment": "bottom center",
               "title": "",
               "button": "Kalle",
-              "cta_link": "shopify:\/\/products\/kalle"
+              "cta_link": "shopify://products/kalle"
             }
           },
           "1486649185448": {
             "type": "image",
             "settings": {
-              "image": "shopify:\/\/shop_images\/A15AAB71-883F-46C6-AC86-E0C454A54FAC.JPG",
+              "image": "shopify://shop_images/A15AAB71-883F-46C6-AC86-E0C454A54FAC.JPG",
               "alignment": "top center",
               "title": "",
               "button": "Sorbet Cardigan",
-              "cta_link": "shopify:\/\/products\/sorbet-cardigan"
+              "cta_link": "shopify://products/sorbet-cardigan"
             }
           },
           "1498334526071": {
             "type": "image",
             "settings": {
-              "image": "shopify:\/\/shop_images\/camille_bluse_7.jpg",
+              "image": "shopify://shop_images/camille_bluse_7.jpg",
               "alignment": "center center",
               "title": "",
               "button": "Camille Bluse",
-              "cta_link": "shopify:\/\/products\/camille-bluse"
+              "cta_link": "shopify://products/camille-bluse"
             }
           },
           "1502053287852": {
             "type": "image",
             "settings": {
-              "image": "shopify:\/\/shop_images\/camille27_87e7e55f-d7ed-42b6-8366-ca0a6b8a305d.jpg",
+              "image": "shopify://shop_images/camille27_87e7e55f-d7ed-42b6-8366-ca0a6b8a305d.jpg",
               "alignment": "bottom center",
               "title": "",
               "button": "Camille",
-              "cta_link": "shopify:\/\/products\/camille"
+              "cta_link": "shopify://products/camille"
             }
           }
         },
@@ -220,27 +220,27 @@
           "1486649413883-0": {
             "type": "image",
             "settings": {
-              "image": "shopify:\/\/shop_images\/edith_bluserE36DCB33-B6CA-4DC2-8E45-97D5303D2E24.JPG",
+              "image": "shopify://shop_images/edith_bluserE36DCB33-B6CA-4DC2-8E45-97D5303D2E24.JPG",
               "alignment": "center center",
               "icon": "none",
               "cta_label": "",
-              "link": "shopify:\/\/products\/edith"
+              "link": "shopify://products/edith"
             }
           },
           "1486649413883-1": {
             "type": "image",
             "settings": {
-              "image": "shopify:\/\/shop_images\/vinterbarnAA1A44F0-459F-43D5-AB50-F0CAA3B08B37.JPG",
+              "image": "shopify://shop_images/vinterbarnAA1A44F0-459F-43D5-AB50-F0CAA3B08B37.JPG",
               "alignment": "center center",
               "icon": "none",
               "cta_label": "",
-              "link": "shopify:\/\/products\/vinterbarn"
+              "link": "shopify://products/vinterbarn"
             }
           },
           "1502053143868": {
             "type": "image",
             "settings": {
-              "image": "shopify:\/\/shop_images\/sorbet_cardigan_2.jpg",
+              "image": "shopify://shop_images/sorbet_cardigan_2.jpg",
               "alignment": "center center",
               "icon": "none",
               "cta_label": "",
@@ -279,7 +279,7 @@
               "heading_text": "",
               "heading_color": "#3a3a3a",
               "heading_style": "h4",
-              "paragraph_text": "<p>Tak&nbsp;for dit bes&oslash;g i min shop.<\/p>",
+              "paragraph_text": "<p>Tak&nbsp;for dit bes&oslash;g i min shop.</p>",
               "paragraph_color": "#f6b1b1",
               "paragraph_size": "1.5",
               "width": "100%",
@@ -293,7 +293,7 @@
               "heading_text": "Contact me",
               "heading_color": "#3a3a3a",
               "heading_style": "h3",
-              "paragraph_text": "<p>mail: millefrydknitwear@gmail.com<\/p>\n<p>instagram: @millefryd_knitwear<\/p>\n<p>facebook: millefryd_knitwear<\/p>",
+              "paragraph_text": "<p>mail: millefrydknitwear@gmail.com</p>\n<p>instagram: @millefryd_knitwear</p>\n<p>facebook: millefryd_knitwear</p>",
               "paragraph_color": "#060000",
               "paragraph_size": "1",
               "width": "50%",
