@@ -1,115 +1,182 @@
-<!-- /templates/article.liquid -->
-{% comment %}
-  Comments will not appear right after they are submitted, either to be checked for spam
+{%- comment -%}
+  Comments may not appear right after they are submitted, either to be checked by Shopify's spam filter
   or to await moderation. When a comment is submitted, the browser is redirected to a page
   that includes the new comment id in its URL.
-    Example: http://shopname.myshopify.com/blogs/news/my-post?comment=3721372
-{% endcomment %}
+    Example: http://shopname.myshopify.com/blogs/news/2022072-my-post?comment=3721372
+{%- endcomment -%}
 
-{% assign number_of_comments = article.comments_count %}
+{%- if comment.status == 'pending' -%}
+  {%- assign number_of_comments = article.comments_count | plus: 1 -%}
+{%- else -%}
+  {%- assign number_of_comments = article.comments_count -%}
+{%- endif -%}
 
-{% comment %}
-  If a comment was just submitted but requires moderation, we have an extra comment to count.
-{% endcomment %}
-{% if comment and comment.status != 'published' %}
-  {% assign number_of_comments = article.comments_count | plus: 1 %}
-{% endif %}
+<article class="page-width">
+  <div class="grid">
+    <div class="grid__item medium-up--five-sixths medium-up--push-one-twelfth">
+      {% section 'article-template' %}
+    </div>
+  </div>
+</article>
 
-<article itemscope itemtype="http://schema.org/Article">
+{% if blog.comments_enabled? %}
+  {% if number_of_comments > 0 %}
+    <hr aria-hidden="true">
+    <div class="page-width">
+      <div class="grid">
+        <div class="grid__item medium-up--five-sixths medium-up--push-one-twelfth">
+          <h2 class="h3">{{ 'blogs.comments.comments_with_count' | t: count: number_of_comments }}</h2>
 
-  {% section 'article-template' %}
+          {% paginate article.comments by 5 %}
 
-  {% if blog.comments_enabled? and number_of_comments > 0 %}
-    <div class="comments-wrapper">
-      <div class="page-width">
-        <div class="grid">
-          <div class="grid__item medium-up--push-one-twelfth">
-            <h3 class="h4">{{ 'blogs.comments.with_count' | t: count: number_of_comments }}</h3>
-          </div>
+            {% comment %}
+              #comments is required, it is used as an anchor link by Shopify.
+            {% endcomment %}
+            <div id="comments">
+              <ul class="comments">
+                {% comment %}
+                  If a comment was just submitted with no blank field, show it.
+                {% endcomment %}
+                {% if comment.status == 'pending' %}
+                  <li id="{{ comment.id }}" class="comment">
+                    {% include 'comment', comment: comment %}
+                  </li>
+                {% endif %}
+
+                {% for comment in article.comments %}
+                  <li id="{{ comment.id }}" class="comment">
+                    {% include 'comment', comment: comment %}
+                  </li>
+                {% endfor %}
+              </ul>
+
+              {%- if paginate.pages > 1 -%}
+                {% include 'pagination', paginate: paginate %}
+              {%- endif -%}
+
+            </div>
+          {% endpaginate %}
         </div>
-
-        {% paginate article.comments by 5 %}
-
-          {% comment %}
-            If a comment was just submitted, show it with the appropriate success message.
-          {% endcomment %}
-          <div id="comments" class="grid">
-
-            {% if comment and comment.status and paginate.current_page == 1 %}
-              <div class="grid__item medium-up--ten-twelfths medium-up--push-one-twelfth">
-                <div class="form-success form-success--comment">
-                  {% if blog.moderated? and comment.status != 'published' %}
-                    {{ 'blogs.comments.success_moderated' | t }}
-                  {% else %}
-                    {{ 'blogs.comments.success' | t }}
-                  {% endif %}
-                </div>
-              </div>
-            {% endif %}
-
-            {% if number_of_comments > 0 %}
-              {% if comment and comment.status != 'published' %}
-                {% include 'comment' %}
-              {% endif %}
-
-              {% for comment in article.comments %}
-                {% include 'comment' %}
-              {% endfor %}
-            {% endif %}
-
-            {% if paginate.pages > 1 %}
-              <div class="grid__item">
-                {% include 'pagination' %}
-              </div>
-            {% endif %}
-          </div>
-        {% endpaginate %}
       </div>
     </div>
   {% endif %}
 
-  {% if blog.comments_enabled? %}
-    <div class="comments-form-wrapper">
-      <div class="page-width">
-        <div class="grid">
-          <div class="grid__item medium-up--push-one-twelfth">
-            <h3 class="comments-form__title h4">{{ 'blogs.comments.title' | t }}</h3>
-          </div>
-
+  <hr aria-hidden="true">
+  <div class="page-width">
+    <div class="grid">
+      <div class="grid__item medium-up--five-sixths medium-up--push-one-twelfth">
+        <div class="comment-form form-vertical">
           {% form 'new_comment', article %}
 
-            <div class="grid__item medium-up--ten-twelfths medium-up--push-one-twelfth">
-              {{ form.errors | default_errors }}
+            {%- assign formId = 'CommentForm' -%}
+
+            <h2 class="h3">{{ 'blogs.comments.title' | t }}</h2>
+
+            {%- assign post_message = 'blogs.comments.success' -%}
+            {%- if blog.moderated? and comment.status == 'pending' -%}
+              {%- assign post_message = 'blogs.comments.success_moderated' -%}
+            {%- elsif comment.status == 'unapproved' or comment.status == 'spam' -%}
+              {%- assign post_message = 'blogs.comments.unapproved' -%}
+            {%- endif -%}
+
+            {% include 'form-status', form: form, form_id: formId, success_message: post_message %}
+
+            <div class="grid">
+
+              <div class="grid__item medium-up--one-half">
+                <label for="{{ formId }}-author">{{ 'blogs.comments.name' | t }}</label>
+                <input type="text" name="comment[author]" id="{{ formId }}-author" class="input-full{% if form.errors contains 'author' %} input--error{% endif %}" value="{{ form.author }}"{% if form.errors contains 'author' %} aria-invalid="true" aria-describedby="{{ formId}}-author-error"{% endif %}>
+                {% if form.errors contains 'author' %}
+                  <span id="{{ formId}}-author-error" class="input-error-message">
+                    <span class="visually-hidden">{{ 'general.accessibility.error' | t }} </span>
+                    {% include 'icon-error' %}
+                    <span>{{ 'blogs.comments.name' | t }} {{ form.errors.messages['author'] }}.</span>
+                  </span>
+                {% endif %}
+              </div>
+
+              <div class="grid__item medium-up--one-half">
+                <label for="{{ formId }}-email">{{ 'blogs.comments.email' | t }}</label>
+                <input type="email" name="comment[email]" id="{{ formId }}-email" class="input-full{% if form.errors contains 'email' %} input--error{% endif %}" value="{{ form.email }}" autocorrect="off" autocapitalize="off" {% if form.errors contains 'email' %} aria-invalid="true" aria-describedby="{{ formId}}-email-error"{% endif %}>
+                {% if form.errors contains 'email' %}
+                  <span id="{{ formId}}-email-error" class="input-error-message">
+                    <span class="visually-hidden">{{ 'general.accessibility.error' | t }} </span>
+                    {% include 'icon-error' %}
+                    <span>{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}.</span>
+                  </span>
+                {% endif %}
+              </div>
+
+              <div class="grid__item">
+                <label for="{{ formId }}-body">{{ 'blogs.comments.message' | t }}</label>
+                <textarea name="comment[body]" id="{{ formId }}-body" class="input-full{% if form.errors contains 'body' %} input--error{% endif %}"{% if form.errors contains 'body' %} aria-invalid="true" aria-describedby="{{ formId}}-body-error"{% endif %}>{{ form.body }}</textarea>
+                {% if form.errors contains 'body' %}
+                  <span id="{{ formId}}-body-error" class="input-error-message">
+                    <span class="visually-hidden">{{ 'general.accessibility.error' | t }} </span>
+                    {% include 'icon-error' %}
+                    <span>{{ 'blogs.comments.message' | t }} {{ form.errors.messages['body'] }}.</span>
+                  </span>
+                {% endif %}
+              </div>
+
             </div>
 
-            <div class="grid__item medium-up--five-twelfths medium-up--push-one-twelfth">
-              <label for="CommentAuthor" class="label--hidden">{{ 'blogs.comments.name' | t }}</label>
-              <input type="text" name="comment[author]" id="CommentAuthor" class="{% if form.errors contains 'author' %} input--error{% endif %}" placeholder="{{ 'blogs.comments.name' | t }}" value="{{ form.author }}">
-            </div>
+            {% if blog.moderated? %}
+              <p class="fine-print">{{ 'blogs.comments.moderated' | t }}</p>
+            {% endif %}
 
-            <div class="grid__item medium-up--five-twelfths medium-up--push-one-twelfth">
-              <label for="CommentEmail" class="label--hidden">{{ 'blogs.comments.email' | t }}</label>
-              <input type="email" name="comment[email]" id="CommentEmail" class="{% if form.errors contains 'email' %} input--error{% endif %}" placeholder="{{ 'blogs.comments.email' | t }}" value="{{ form.email }}" autocorrect="off" autocapitalize="off">
-            </div>
-
-            <div class="grid__item medium-up--ten-twelfths medium-up--push-one-twelfth">
-              <label for="CommentBody" class="label--hidden">{{ 'blogs.comments.message' | t }}</label>
-              <textarea name="comment[body]" id="CommentBody" class="{% if form.errors contains 'body' %} input--error{% endif %}" placeholder="{{ 'blogs.comments.message' | t }}">{{ form.body }}</textarea>
-            </div>
-
-            <div class="grid__item medium-up--push-one-twelfth">
-              <input type="submit" class="btn btn--input" value="{{ 'blogs.comments.post' | t }}">
-            </div>
-
+            <input type="submit" class="btn" value="{{ 'blogs.comments.post' | t }}">
           {% endform %}
-
-          {% if blog.moderated? %}
-            <div class="grid__item medium-up--push-one-twelfth">
-              <p class="comments__moderated text-small">{{ 'blogs.comments.moderated' | t }}</p>
-            </div>
-          {% endif %}
         </div>
       </div>
     </div>
+  </div>
+{% endif %}
+
+<div class="text-center return-link-wrapper page-width">
+  <a href="{{ blog.url }}" class="btn btn--secondary btn--has-icon-before">
+    {% include 'icon-arrow-left' %}
+    {{ 'blogs.article.back_to_blog' | t: title: blog.title }}
+  </a>
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "articleBody": {{ article.content | strip_html | json }},
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": {{ shop.url | append: page.url | json }}
+  },
+  "headline": {{ article.title | json }},
+  {% if article.excerpt != blank %}
+    "description": {{ article.excerpt | strip_html | json }},
   {% endif %}
-</article>
+  {% if article.image %}
+    {% assign image_size = article.image.width | append: 'x' %}
+    "image": [
+      {{ article | img_url: image_size | prepend: "https:" | json }}
+    ],
+  {% endif %}
+  "datePublished": {{ article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+  "dateCreated": {{ article.created_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+  "author": {
+    "@type": "Person",
+    "name": {{ article.author | json }}
+  },
+  "publisher": {
+    "@type": "Organization",
+    {% if settings.share_image %}
+      {% assign image_size = settings.share_image.width | append: 'x' %}
+      "logo": {
+        "@type": "ImageObject",
+        "height": {{ settings.share_image.height | json }},
+        "url": {{ settings.share_image | img_url: image_size | prepend: "https:" | json }},
+        "width": {{ settings.share_image.width | json }}
+      },
+    {% endif %}
+    "name": {{ shop.name | json }}
+  }
+}
+</script>
